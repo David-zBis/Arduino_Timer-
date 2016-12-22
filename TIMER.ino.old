@@ -1,0 +1,80 @@
+int buttonPin_START = 2;
+int buttonPin_PLUS = 4;
+int buttonPin_MOINS = 7;
+int ledPin = 13;
+int buttonState_START = 0;
+int buttonState_PLUS = 0;
+int buttonState_MOINS = 0;
+int duree_select = 0;
+long temps = 0;
+
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(ledPin, OUTPUT);
+pinMode(buttonPin_START, INPUT);
+pinMode(buttonPin_PLUS, INPUT);
+pinMode(buttonPin_MOINS, INPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  //on lit l etat des buttons
+buttonState_START = digitalRead(buttonPin_START);
+buttonState_PLUS = digitalRead(buttonPin_PLUS);
+buttonState_MOINS = digitalRead(buttonPin_MOINS);
+
+//traitement bouton +
+if (buttonState_PLUS == HIGH){
+  if(duree_select < 5){ // un contrôle sur la valeur duree_select pour ne pas dépasser la valeur 5
+     duree_select = duree_select + 1 ;
+  }
+ 
+  while(digitalRead(buttonPin_PLUS) == HIGH){
+    delay(25);
+  }
+}
+
+//traitement bouton -
+if (buttonState_MOINS == HIGH){
+ if(duree_select > 0){ // un contrôle sur la valeur duree_select pour ne pas passer à la valeur -1
+   duree_select = duree_select - 1 ;
+ }
+
+  while(digitalRead(buttonPin_MOINS) == HIGH){
+    delay(25);
+  }
+}
+
+//traitement bouton start
+if (buttonState_START == HIGH){
+  switch (duree_select) {
+       case 0:
+         temps = 1000;
+         break;
+       case 1:
+         temps = 2000;
+         break;
+       case 2:
+         temps = 3000;
+         break;
+       case 3:
+         temps = 4000;
+         break;
+       case 4:
+         temps = 5000;
+         break;
+       case 5:
+         temps = 60000;
+         break;
+       default:
+         break;
+     }
+  digitalWrite(ledPin, HIGH);
+  delay (temps);
+  digitalWrite(ledPin, LOW);
+}
+delay(25);
+
+
